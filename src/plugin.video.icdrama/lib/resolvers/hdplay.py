@@ -35,6 +35,31 @@ class HdPlay(ResolveUrl):
             if match:
                 video_url = 'http://' + host + match.group(1)
                 return video_url + helpers.append_headers(self.headers)
+
+            # these are for after the hdplay-cache server change
+            video_url = None
+
+            if video_url is None:
+                match = re.search(r'<div\s+id=video_url\s+.+?>(.+?)</div>', html)
+                if match:
+                    video_url = match.group(1)
+
+            if video_url is None:
+                lines = html.splitlines()
+                # hack assuption that higher quality video at the bottom
+                lines.reverse()
+                for line in lines:
+                    line = line.strip()
+                    if line.startswith('/hdplay-cache/'):
+                        video_url = line
+                        break
+
+            # apply fixup to the extracted video URL
+            if video_url:
+                if re.match(r'^.+\?v=\d$', video_url):
+                    video_url = video_url[0:-len("?v=1")]
+                video_url = 'http://' + host + video_url
+                return video_url + helpers.append_headers(self.headers)
             xbmc.log(f"html: {html}", xbmc.LOGERROR)
 
 
