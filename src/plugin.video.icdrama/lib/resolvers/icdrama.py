@@ -15,8 +15,8 @@ from lib import auto_select
 
 class Icdrama(ResolveUrl):
     name = 'Icdrama'
-    domains = [ 'adrama.to', 'icdrama.se', 'icdrama.to']
-    pattern = '(?://|\.)(adrama\.to|icdrama\.se|icdrama\.to)/(.+)'
+    domains = [ 'adramas.se, 'adrama.to', 'icdrama.se', 'icdrama.to']
+    pattern = '(?://|\.)(adramas\.se|adrama\.to|icdrama\.se|icdrama\.to)/(.+)'
 
 
     def __init__(self):
